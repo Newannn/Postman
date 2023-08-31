@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "04978ef0-be85-43fc-b165-b328cf484659",
-		"name": "15",
+		"name": "AU",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24659669"
 	},
@@ -88,7 +88,7 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Response time is less than 700ms\", function () {",
+							"pm.test(\"Загрузка страницы происходит не более 700ms\", function () {",
 							"    pm.expect(pm.response.responseTime).to.be.below(700);",
 							"});"
 						],
@@ -132,15 +132,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = pm.response.json ();",
-							"pm.environment.set(\"email\",jsonData.email);",
-							"pm.environment.set(\"userID\",jsonData.id);",
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"email\", jsonData.email);",
+							"pm.environment.set(\"userID\", jsonData.id);",
 							"",
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Body matches id\", function () {",
+							"pm.test(\"Проверка что пользователь с таким id создан\", function () {",
 							"    pm.expect(pm.response.text()).to.include(\"id\");",
 							"});",
 							"",
@@ -149,96 +149,42 @@
 							"});",
 							"",
 							"",
+							"pm.test(\"lastName\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"lastName\");",
+							"});",
 							"",
-							"",
-							"",
-							"pm.test(\"Проверка поля email\", function () {",
+							"pm.test(\"Проверка наличия символа \\\"@\\\" в поле email\", function () {",
 							"    var email = pm.response.json().email;",
 							"",
-							"    // Проверка наличия символа \"@\" в поле email",
-							"    pm.expect(email).to.include(\"@\",);",
+							"    pm.expect(email).to.include(\"@\");",
 							"});",
 							"",
 							"pm.test(\"Отсутствие символов кириллицы в поле email\", function () {",
 							"    var email = pm.response.json().email;",
 							"",
-							"    // Проверка, что поле email не содержит символов кириллицы",
-							"    pm.expect(email).to.match(/^[^\\u0400-\\u04FF]+$/,);",
+							"    pm.expect(email).to.match(/^[^\\u0400-\\u04FF]+$/);",
 							"});",
 							"",
-							"pm.test(\"email на отсутствие запрещенных специальных символов кроме . - _\", function () {",
+							"pm.test(\"email на отсутствие запрещенных специальных символов кроме (точки, тере, нижнего подчеркивания) . - _\", function () {",
 							"    var email = pm.response.json().email;",
 							"",
-							"    // Проверка, что поле email не содержит запрещенных специальных символов",
-							"    pm.expect(email).to.match(/^[a-zA-Z0-9.-_]+$/,);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "firstName",
-							"value": "{{$randomFirstName}}",
-							"type": "text"
-						},
-						{
-							"key": "lastName",
-							"value": "{{$randomLastName}}",
-							"type": "text"
-						},
-						{
-							"key": "email",
-							"value": "{{$randomEmail}}",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "https://dummyapi.io/data/v1/user/create",
-					"protocol": "https",
-					"host": [
-						"dummyapi",
-						"io"
-					],
-					"path": [
-						"data",
-						"v1",
-						"user",
-						"create"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create User Copy",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json ();",
-							"pm.environment.set(\"email\",jsonData.email);",
-							"pm.environment.set(\"userID\",jsonData.id);",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"    pm.expect(email).to.match(/^[a-zA-Z0-9.-_]+$/);",
 							"});",
 							"",
-							"pm.test(\"Body matches id\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"id\");",
+							"// HEADERS",
+							"",
+							"pm.test(\"Заголовок Content-Type установлен\", function () {",
+							"    pm.response.to.have.header(\"Content-Length\");",
 							"});",
 							"",
-							"pm.test(\"Body firstName\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"firstName\");",
-							"});"
+							"pm.test(\"Заголовок Access-Control-Allow-Origin\", function () {",
+							"    pm.response.to.have.header(\"Access-Control-Allow-Origin\");",
+							"});",
+							"",
+							"pm.test(\"Заголовок Cache-Control\", function () {",
+							"    pm.response.to.have.header(\"Cache-Control\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
